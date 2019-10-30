@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>预付录入</title>
+		<!-- Bootstrap core CSS -->
+		<link th:href="@{/webjars/bootstrap/4.1.2/css/bootstrap.css}" rel="stylesheet">
+		<link th:href="@{/asserts/css/bootstrap.min.css}" rel="stylesheet">
+		<link th:href="@{/asserts/css/bootstrap-responsive.min.css}" rel="stylesheet">
+		<link th:href="@{/asserts/css/font-awesome.css}" rel="stylesheet">
+		<link th:href="@{/asserts/css/style.css}" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+
+        <link th:href="@{/asserts/css/bootstrap-datetimepicker.css}" rel="stylesheet">
+
+		<style type="text/css">
+			/* Chart.js */
+			
+			@-webkit-keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			@keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			.chartjs-render-monitor {
+				-webkit-animation: chartjs-render-animation 0.001s;
+				animation: chartjs-render-animation 0.001s;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<!--引入抽取的topbar-->
+		<div th:replace="~{commons/bar::(${session.mark}==1?teacher-topbar:topbar)}"></div>
+				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-3">
+					<form th:action="@{/project}"  method="post" enctype="multipart/form-data">
+						<!--
+                                添加隐藏域，以使SpringBoot能将post请求转化为put请求
+                                -->
+						<input type="hidden" name="_method" value="put" th:if="${project!=null}"/>
+						<input type="hidden" name="id" th:value="${project.id}" th:if="${project!=null}">
+						<div class="form-group" >
+							<label>业务编号</label>
+							<input name="num" type="text"  th:value="${project!=null}?${project.num}">
+						</div>
+                        <div class="form-group">
+                            <label>汇款人名称</label>
+                            <input name="company" type="text"  th:value="${project!=null}?${project.company}">
+                        </div>
+						<div class="form-group">
+							<label>币种</label>
+							<select  name="currency.code">
+								<option th:selected="${project!=null}?${currency.code==project.currency.code}" th:value="${currency.code}" th:each="currency:${currencies}" th:text="${currency.c_name}"></option>
+							</select>
+						</div>
+                        <div class="form-group" >
+                            <label>金额</label>
+                            <input name="money" type="text"  th:value="${project!=null}?${project.money}">
+                        </div>
+						<div class="form-group">
+							<label>收款人国别</label>
+							<select  name="country.code">
+								<option th:selected="${project!=null}?${country.code==project.country.code}" th:value="${country.code}" th:each="country:${countries}" th:text="${country.d_name}"></option>
+							</select>
+						</div>
+                        <div class="form-group">
+                            <label>承诺时间</label>
+                            <input name="book_time" type="text"  th:value="${project!=null}?${#temporals.format(project.book_time,'yyyyMMdd')}">
+                        </div>
+                        <div class="form-group">
+                            <label>经办人姓名</label>
+                            <input name="staff" type="text"  th:value="${project!=null}?${project.staff}">
+                        </div>
+                        <div class="form-group">
+                            <label>联系电话</label>
+                            <input name="phone" type="text"  th:value="${project!=null}?${project.phone}">
+                        </div>
+                        <div class="form-group">
+                            <label>邮寄地址</label>
+                            <input name="address" type="text"  th:value="${project!=null}?${project.address}">
+                        </div>
+                        <div class="form-group" >
+                            <label>核查时间</label>
+                            <input name="check_time" type="text"  th:value="${project!=null}?${#temporals.format(project.check_time,'yyyyMMdd')}">
+                        </div>
+						<div class="form-group" th:if="${project!=null && project.statue >= 1}">
+							<label>销账时间</label>
+							<input name="finish_time" type="text"  th:value="${project!=null}?${#temporals.format(project.finish_time,'yyyyMMdd')}">
+						</div>
+						<div class="form-group" >
+							<label>项目状态</label><br/>
+							<div class="form-check form-check-inline" >
+								<input class="form-check-input" type="radio" name="statue"  value="0" th:checked="${project!=null}?${project.statue==0}">
+								<label class="form-check-label">未核查</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="statue"  value="1" th:checked="${project!=null}?${project.statue==1}">
+								<label class="form-check-label">已核查</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="statue"  value="2" th:checked="${project!=null}?${project.statue==2}">
+								<label class="form-check-label">销账</label>
+							</div>
+						</div>
+						<div class="form-group" th:if="${project!=null && project.statue == 2}">
+							<label>后置处置</label>
+							<input name="dispose" type="text"  th:value="${project!=null}?${project.dispose}">
+						</div>
+						<button type="submit" class="btn btn-primary" th:text="${project!=null?'提交':'添加'}">添加</button>
+					</form>
+
+				</main>
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.js}" src="../static/asserts/js/jquery-3.2.1.slim.min.js" ></script>
+		<script type="text/javascript" src="asserts/js/popper.min.js" th:src="@{/asserts/js/popper.min.js}"></script>
+
+		<script type="text/javascript" th:src="@{/webjars/bootstrap/4.1.2/js/bootstrap.js}" ></script>
+
+		<!-- Icons -->
+		<script type="text/javascript" src="asserts/js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
+
+		<!-- Graphs -->
+		<script type="text/javascript" th:src="@{/asserts/js/Chart.min.js}"  src="../../static/asserts/js/Chart.min.js"></script>
+
+        <script type="text/javascript" src="asserts/js/bootstrap-datetimepicker.js" th:src="@{/asserts/js/bootstrap-datetimepicker.js}"></script>
+
+        <script type="text/javascript" src="asserts/js/locales" th:src="@{/asserts/js/locales}"></script>
+
+
+        <script type="text/javascript">
+            $('#datetimepicker').datetimepicker({
+                format: 'yyyy-mm-dd'
+            });
+        </script>
+	</body>
+
+</html>

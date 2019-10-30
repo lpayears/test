@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>项目管理</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/webjars/bootstrap/4.1.2/css/bootstrap.css}" rel="stylesheet">
+
+    <!-- 引入bootstrap-table样式 -->
+
+    <link th:href="@{/asserts/css/bootstrap-table.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+    <link th:href="@{/asserts/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/asserts/css/bootstrap-responsive.min.css}" rel="stylesheet">
+    <link th:href="@{/asserts/css/font-awesome.css}" rel="stylesheet">
+    <link th:href="@{/asserts/css/style.css}" rel="stylesheet">
+
+    <link th:href="@{/asserts/css/bootstrap-datetimepicker.css}" rel="stylesheet">
+
+    <!-- jquery及bootstrapjs -->
+    <script src="asserts/js/jquery-3.3.1.min.js"></script>
+    <script src="asserts/js/bootstrap.min.js"></script>
+    <!-- bootstrap-table.min.js -->
+    <script src="asserts/js/bootstrap-table.min.js"></script>
+
+    <!-- 引入bootstrap-table样式 -->
+
+    <link th:href="@{/asserts/js/bootstrap-table.js}" rel="stylesheet">
+
+    <!-- 引入中文语言包 -->
+
+    <script src="asserts/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="asserts/js/bootstrap-table-export.min.js"></script>
+    <script src="asserts/js/bootstrap-table-filter-control.min.js"></script>
+    <script src="js/bootstrap-table-toolbar.js"></script>
+    <script src="asserts/js/bootstrap-table-editable.min.js"></script>
+    <script src="js/tableExport.js"></script>
+
+</head>
+
+<body>
+
+<!--引入抽取的topbar-->
+
+<div th:class="main" id="main">
+    <div th:replace="~{commons/bar::(${session.mark}==1?manage-topbar:topbar)}"></div>
+    <div class="container">
+        <div class="xia">
+            <div class="widget widget-table action-table">
+                <div class="widget-header"><i class="icon-th-list"></i>
+                    <h3>报表管理</h3>
+                </div>
+        <form class="choose" id="search-form">
+
+                项目状态
+                <select name="statue"  id="search_statue">
+                    <option value="0"></option>
+                    <option th:value="1">已收回</option>
+                    <option th:value="2">未收回</option>
+                    <option th:value="3">移交外管局</option>
+                </select>
+
+
+                时间范围：
+                    <input name="startDate" type="text" id="startData" style="width: 15%; height: 30px;margin: 10px;background: #faf7f4;">
+                --
+                    <input name="endDate" type="text" id="endData" style="width: 15%; height: 30px;margin: 10px;background: #faf7f4;">
+
+
+            报表设置：
+            <select name="export" id="exportMenu" >
+                <option value="0"></option>
+                <option   th:value="1">离承诺期15天内</option>
+                <option  th:value="2">离承诺期15天以上</option>
+                <option th:value="3">逾期30天以内</option>
+                <option  th:value="4">逾期30天以上</option>
+            </select>
+
+                <div style = "text-align:right;">
+                <button type="button" class="btn btn-primary" id="search-btn">搜索</button>
+                <button type="button" class="btn btn-info" id="reset-search-btn">取消</button>
+                    <button  type="button" id="savebtn"  class="btn btn-info">导出</button>
+                </div>
+        </form>
+        <div class="tb-container">
+            <div class="table-responsive">
+                <table class="table table-striped table-sm" id="table1">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>业务日期</th>
+                        <th>业务编号</th>
+                        <th>汇款人名称</th>
+                        <th>币种</th>
+                        <th>金额</th>
+                        <th>收款人国别</th>
+                        <th>承诺到期时间</th>
+                        <th>项目状态</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table2">
+                    <tr th:each="project:${pageInfo.getContent()}">
+                        <td id="id" th:text="${project.id}"></td>
+                        <td id="yw_time" th:text="${#temporals.format(project.yw_time,'yyyy-MM-dd')}"></td>
+                        <td id=num th:text="${project.num}"></td>
+                        <td id="company" th:text="${project.company}"></td>
+                        <td id="currency" th:text="${project.currency.c_name}"></td>
+                        <td id="money" th:text="${project.money}"></td>
+                        <td id="country" th:text="${project.country.d_name}"></td>
+                        <td id="book_time" th:text="${#temporals.format(project.book_time,'yyyy-MM-dd')}"></td>
+                        <td id="statue" th:text="${project.statue}==0? '未核查':(${project.statue}==1?'已核查':'已销账')"></td>
+                       <td>
+                            <a class="btn btn-sm btn-primary" th:if="${project!=null && project.statue != 2}" th:href="@{/project/}+${project.id}">编辑</a>
+                            <a class="btn btn-sm btn-dark reset-btn" th:if="${project!=null && project.statue == 1}" th:href="@{/project/}+${project.id}">销账</a>
+                            <a class="btn btn-sm btn-primary" th:if="${project!=null && project.statue == 2}" th:href="@{/project/}+${project.id}">处置录入</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <td colspan="8">
+                        <div class="pagelist" id="page">
+                            <p>当前<span th:text="${pageInfo.getNumber()} + 1"></span>页,总<span th:text="${pageInfo.totalPages}"></span>页
+                                　　　　　　　　　　　　　　　　　共<span th:text="${pageInfo.totalElements}"></span>条记录
+                                <a th:href="@{/getprojects}">首页</a>
+                                <a th:href="@{/getprojects/(pageNum = ${pageInfo.hasPrevious()} ? ${pageInfo.getNumber() } : 1)}">上一页</a>
+                                <a th:href="@{/getprojects/(pageNum = ${pageInfo.hasNext()} ? ${pageInfo.getNumber()} + 2 : ${pageInfo.totalPages})}">下一页</a>
+                                <a th:href="@{/getprojects/(pageNum = ${pageInfo.totalPages})}">尾页</a></p>
+                        </div>
+
+                    </td>
+                </table>
+            </div>
+        </div>
+        </div>
+
+</div>
+</div>
+</div>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.js}" src="../../static/asserts/js/jquery-3.2.1.slim.min.js" ></script>
+<script type="text/javascript" src="asserts/js/popper.min.js" th:src="@{/asserts/js/popper.min.js}"></script>
+
+<script type="text/javascript" src="asserts/js/bootstrap-datetimepicker.js" th:src="@{/asserts/js/bootstrap-datetimepicker.js}"></script>
+
+<script type="text/javascript" src="asserts/js/locales" th:src="@{/asserts/js/locales}"></script>
+
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.1.2/js/bootstrap.js}" ></script>
+<script type="text/javascript">
+    var totalRecord,currentPage;
+    var baseUrl = 'http://localhost:8080';
+
+    $('#search-btn').click(function () {
+      //  $('#table2').empty();
+        to_page(1);
+     //   $('#table1').refresh();
+    })
+    $('#reset-search-btn').click(function () {
+       // $('#search-form')[0].reset();
+        to_page(1);
+    })
+
+    function to_page(pn) {
+
+        $.ajax({
+            url: baseUrl + '/getprojects',
+            method: 'get',
+            dataType:"html",
+            data: $.param({
+                'pn': pn
+            }) + '&' + $('#search-form').serialize(),
+            async: false,
+            success: function (data) {
+               // alert("success" );
+                $("#main").html(data);//刷新整个body页面的html
+                // console.info(data);
+                //   var obj = eval(list);
+                //  alert(obj.length);
+
+                //var tb = document.getElementById("table2");
+               //alert(tb.rows.length);
+
+                //var tb = document.getElementById("#table2");
+                //              $('#table2').empty();
+                //               var row = null;
+                //                   row.appendTo("#table1");
+
+                //console.info(result.info);
+               // build_table(data.info._getPageInfo.list);
+
+                //       build_table(result._getPageInfo().list);
+                //         build_page_info(result.info.pageInfo);
+                //        build_nav(result.info.pageInfo);
+                //        build_page_info(result.info._getPageInfo());
+                //        build_nav(result.info._getPageInfo());
+
+            } })
+    }
+
+    var postDownLoadFile = function (options) {
+        var config = $.extend(true, { method: 'get' }, options);
+        var $iframe = $('<iframe id="down-file-iframe" />');
+        var $form = $('<form target="down-file-iframe" method="' + config.method + '" />');
+        $form.attr('action', config.url);
+        for (var key in config.data) {
+            $form.append('<input type="hidden" name="' + key + '" value="' + config.data[key] + '" />');
+        }
+        $iframe.append($form);
+        $(document.body).append($iframe);
+        $form[0].submit();
+        $iframe.remove();
+    }
+
+    $('#savebtn').click(function(){
+        alert("是否导出？");
+        var statue = $('#search_statue').val();
+        var startData = $('#startData').val();
+        var endDate = $('#endData').val();
+        var exportvalue = $('#exportMenu').val();
+       // strurl = "localhost:8080/ExcelDownload?statue="+statue+"&startDate="+startData+"&endDate="+endDate+"&export="+exportvalue;
+        window.open("localhost:8080/ExcelDownload?statue="+statue+"&startDate="+startData+"&endDate="+endDate+"&export="+exportvalue);
+        //alert("1");
+    });
+
+
+
+    $('#endData').show(function () {
+        $(this).val(getCurrentDate());
+    });
+
+    function getCurrentDate() {
+        var data = new Date();
+        var seperator1 = "-";
+        //var year = data.getFullYear();
+       // var month = data.getMonth() + 1;
+        //var day =data.getDate();
+       // if (month >= 1 && month <= 9) {
+       //     month = "0" + month;
+       // }
+       // if (day >= 0 && day <= 9) {
+       //     day = "0" + day;
+       // }
+        //var currentdata =year+seperator1+month+seperator1+day;
+       // var data = year +''+month+''+day;
+        var now =new Date();
+      //  now = now.setDate(data.getDate()+30);
+        str = new Date(now);
+        var year = str.getFullYear();
+        var month = str.getMonth() + 1;
+        var day =str.getDate();
+         if (month >= 1 && month <= 9) {
+            month = "0" + month;
+         }
+         if (day >= 0 && day <= 9) {
+             day = "0" + day;
+         }
+        var sdata = year +''+month+''+day;
+        return sdata;
+    }
+
+
+</script>
+<!-- Icons -->
+<script type="text/javascript" src="asserts/js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
+
+</body>
+
+
+
+</html>

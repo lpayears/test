@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Dashboard Template for Bootstrap</title>
+		<!-- Bootstrap core CSS -->
+		<link th:href="@{/webjars/bootstrap/4.1.2/css/bootstrap.css}" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+		<style type="text/css">
+			/* Chart.js */
+			
+			@-webkit-keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			@keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			.chartjs-render-monitor {
+				-webkit-animation: chartjs-render-animation 0.001s;
+				animation: chartjs-render-animation 0.001s;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<!--引入抽取的topbar-->
+		<div th:replace="~{commons/bar::(${session.mark}==1?teacher-topbar:topbar)}"></div>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div th:replace="~{commons/bar::(${session.mark}==1?teacher-sidebar:(${session.mark}==2?admin-sidebar:(${session.mark==3}?gov-sidebar:expert-sidebar)))(activeUri='postManages')}" ></div>
+
+				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+					<h1>结题验收管理</h1>
+					<div class="table-responsive">
+						<table class="table table-striped table-sm">
+							<thead>
+								<tr>
+									<th>编号</th>
+									<th>项目ID</th>
+									<th>项目名称</th>
+									<th>结题日期</th>
+									<th>材料说明</th>
+									<th>上传材料</th>
+									<th>状态</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="postManage:${postManages}">
+									<td th:text="${postManage.id}"></td>
+									<td th:text="${postManage.project.id}"></td>
+									<td th:text="${postManage.project.name}"></td>
+									<td th:text="${#temporals.format(postManage.endDate,'yyyy-MM-dd')}"></td>
+									<td th:text="${postManage.explanation}"></td>
+									<td th:text="${postManage.path}"></td>
+									<td th:text="${postManage.state}==0?'审核中':(${postManage.state}==1?'已结题':'待整改') "></td>
+									<td>
+										<a class="btn btn-sm btn-primary" th:href="@{/download/}+${postManage.id}" th:if="${session.mark}==3">下载</a>
+										<a class="btn btn-sm btn-primary" th:href="@{/postManage/}+${postManage.id}+'/'+${session.mark}"
+										th:text="${session.mark}==1?'上传':'编辑'"></a>
+										<a class="btn btn-sm btn-danger" th:href="@{/reject/}+${postManage.id}">驳回</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</main>
+				<form id="deleteForm" method="post">
+					<input type="hidden" name="_method" value="delete">
+				</form>
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/jquery.js}" src="../static/asserts/js/jquery-3.2.1.slim.min.js" ></script>
+		<script type="text/javascript" src="asserts/js/popper.min.js" th:src="@{/asserts/js/popper.min.js}"></script>
+
+		<script type="text/javascript" th:src="@{/webjars/bootstrap/4.1.2/js/bootstrap.js}" ></script>
+
+		<!-- Icons -->
+		<script type="text/javascript" src="asserts/js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
+
+		<!-- Graphs -->
+		<script type="text/javascript" th:src="@{/asserts/js/Chart.min.js}"  src="../../static/asserts/js/Chart.min.js"></script>
+
+	</body>
+
+</html>

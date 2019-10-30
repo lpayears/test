@@ -1,0 +1,252 @@
+h4, h5, h6,
+h1, h2, h3 {
+    margin: 0;
+}
+
+ul, ol {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    margin: 0;
+}
+
+html, body {
+    font-family: 'Open Sans', sans-serif !important;
+    font-size: 100%;
+    background: #ffffff;
+}
+
+body a {
+    transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -o-transition: 0.5s all;
+    -ms-transition: 0.5s all;
+}
+
+h1.b1, h2.b2, h3.b3 {
+    margin-bottom: 25px;
+    display: block;
+}
+
+.row {
+    margin: 0;
+}
+
+.breadcrumb {
+    margin: 1em 0;
+}
+
+/*-- header_top --*/
+.banner {
+    background: url(../images/task_background.jpg) no-repeat 0px 0px;
+    min-height: 950px;
+}
+
+.logo {
+    float: left;
+    margin-left: 50px;
+}
+
+.top-menu {
+    float: right;
+    margin-top: 10px;
+}
+
+.banner_head_top {
+    /*background: #000;*/
+    background-color: transparent;
+    /*padding:0px 44px;*/
+    /*margin-top:1em;*/
+}
+
+.logo h1 a {
+    display: inline-block;
+    color: #0dc5dd;
+    font-size: 1.1em;
+    font-weight: 700;
+    font-family: 'Titillium Web', sans-serif;
+    text-decoration: none;
+}
+
+.logo h1 a span {
+    color: #ffdd57;
+}
+
+.headr-right {
+    text-align: right;
+    margin-top: 3em;
+}
+
+.navbar-collapse {
+    padding: 0;
+}
+
+.navbar-nav > li > a {
+    padding: 13px 10px;
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: 600;
+    font-size: 1em;
+    color: #fff !important;
+    /*border-bottom:1px solid #000;*/
+    margin-right: 20px;
+}
+
+.navbar-nav > li > a:hover {
+    color: #0dc5dd !important;
+    border-bottom: 1px solid #fff !important;
+}
+
+.navbar {
+    margin: 2em 0;
+}
+
+.navbar-default {
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
+
+.navbar {
+    margin: 0em 0;
+}
+
+.banner-head {
+    margin-bottom: 2em;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    background-color: transparent !important;
+    color: #0dc5dd !important;
+    border-bottom: 1px solid #fff !important;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    background-color: transparent !important;
+}
+
+.nofinish {
+    width: 46%;
+    background: white;
+    height: 780px;
+    margin-left: 50px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    float: left;
+    border-radius: 5px;
+}
+
+.finish {
+    width: 46%;
+    background: white;
+    height: 780px;
+    margin-right: 50px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    float: right;
+    border-radius: 5px;
+}
+
+.me a:hover {
+    border-bottom: none !important;
+}
+
+.title {
+    height: 75px;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.title img {
+    width: 5%;
+    float: left;
+    margin: 20px;
+}
+
+.title p {
+    font-size: 18px;
+    margin: 25px 0 20px 0;
+    float: left;
+}
+
+.btn-primary {
+    width: 23% !important;
+}
+
+.biao {
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+.nei th {
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+.nei td {
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+.chakan {
+    font-size: 10px !important;
+}
+
+.dataTables_filter {
+    border-bottom: 1px solid #ddd;
+    height: 45px;
+}
+
+.dataTables_filter label {
+    float: right;
+    margin: 10px;
+}
+
+.paginate_disabled_previous {
+    /*border: 1px solid #ababab;*/
+    color: #ababab;
+    margin: 10px;
+}
+
+.paginate_disabled_previous:hover {
+    color: #7b7b7b;
+    text-decoration: none;
+}
+
+.paginate_enabled_previous {
+    color: #ababab;
+    margin: 10px;
+}
+
+.paginate_enabled_previous:hover {
+    color: #7b7b7b;
+    text-decoration: none;
+}
+
+.paginate_disabled_next {
+    color: #ababab;
+    margin: 10px;
+}
+
+.paginate_disabled_next:hover {
+    color: #7b7b7b;
+    text-decoration: none;
+}
+
+.paginate_enabled_next {
+    color: #ababab;
+    margin: 10px;
+}
+
+.paginate_enabled_next:hover {
+    color: #7b7b7b;
+    text-decoration: none;
+}
+
+.paging_two_button {
+    /*float: right;*/
+    /*margin-right: 100px;*/
+    text-align: center;
+}
